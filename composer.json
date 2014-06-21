@@ -1,0 +1,13 @@
+{
+	"require": {
+		"slim/slim": "2.*",
+		"kevinlebrun/slug.php": "1.*"
+	},
+	"autoload" : {
+		"psr-4" : {
+			"Blockr\\" : "Blockr",
+			"Blockr\\Models\\": "Blockr/models/",
+			"Blockr\\Controllers\\": "Blockr/controllers/"
+		}
+	}
+}
