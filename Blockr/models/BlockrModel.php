@@ -8,8 +8,14 @@ class BlockrModel {
 
 	protected $_id;
 	protected $_settings = array();
-	protected $_identifierField = "id";
+	protected $_identifierField = "_id";
 
+	public static function find($type, $where=array(), $howMany=null) {
+		$mongo = \Blockr\MongoConn::getInstance();
+		$res = $mongo->collection($type)->find($where);
+		if ($howMany) $res->limit($howMany);
+		return $res;
+	}
 
 	public function __construct($config = array()) {
 		$this->_mongo = \Blockr\MongoConn::getInstance();
@@ -23,18 +29,22 @@ class BlockrModel {
 		if (!empty($config)) {
 			foreach($config AS $k=>$v) {
 				if (in_array($k, static::$_props)) {
+					$k = trim($k, "_");
+					//wrap _ids as mongo ids
+					if ($k=="id" && !is_a($v, "MongoId")) $v = new \MongoId($v);
 					$this->{"_".$k} = $v;
-				}
+				}			
 			}
 		}
-
+		if (empty($this->_id)) $this->_id = new \MongoId();
 	}
 
-	public function setID($id) {
-		$this->_id = $id;
+	public function _id($id=null) {
+		return $this->id($id);
 	}
 
-	public function id() {
+	public function id($id=null) {
+		if (!empty($id)) $this->_id = !is_a($id, "MongoId")  ? $id : new MongoId($id);
 		return $this->_id;
 	}
 
@@ -56,13 +66,13 @@ class BlockrModel {
 	}
 
 	public function save() {
-		return $this->_mongo->collection($this->_collection)->findAndModify(array($this->_identifierField=>$this->{$this->_identifierField}()), $this->getProps(), null, array("new"=>true, "upsert"=>true));
+		return $this->_mongo->collection($this->_collection)->findAndModify(array("_id"=>$this->_id), $this->getProps(), null, array("new"=>true, "upsert"=>true));
 	}
 
 	public function getProps() {
 		$props = array();
 		foreach (static::$_props AS $prop) {
-			if ($prop=="id" || $this->{$prop}()===null) continue;
+			if ($this->{$prop}()===null) continue;
 			$props[$prop] = is_array($prop) ? json_encode($this->{$prop}()) : $this->{$prop}();
 		}
 		return $props;

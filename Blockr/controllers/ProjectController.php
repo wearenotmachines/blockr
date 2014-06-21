@@ -8,8 +8,17 @@ class ProjectController extends \Blockr\Controllers\BaseController {
 	}
 
 	public function define(\Blockr\Models\Project $project=null) {
-		if (empty($project)) $project = new \Blockr\Models\Project();
+		if (empty($project)) {
+			$project = new \Blockr\Models\Project();
+		} else {
+			$project->load();
+		}
 		$this->_data['project'] = $project;
 		$this->_app->render("projects/define.php",$this->_data);
 	}	
+
+	public function save($projectData=array()) {
+		$p = new \Blockr\Models\Project($projectData);
+		echo "<pre>"; print_r($p->save()); echo "</pre>";
+	}
 }
