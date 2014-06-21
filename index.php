@@ -9,10 +9,10 @@
 	});
 
 	$app->get("/mongo", function() {
-		$mongo = \Blockr\MongoConn::getInstance();
-		$collection = $mongo->collection("resources");
-		$res = $collection->findAndModify(array("email"=>"alex@wearenotmachines.com"), array('$set'=>array("email"=>"alex@wearenotmachines.com", "name" => "Alex")), null, array("new"=>true, "upsert"=>true));
-		var_dump($res);
+		$resources = \Blockr\Models\Resource::find("resources", array("settings"=>array('$ne'=>array("active"=>"1"))));
+		foreach ($resources AS $r) {
+			echo "<pre>"; print_r($r); echo "</pre>";
+		}
 	});
 
 	$app->get("/resource", function() use ($app) {
@@ -25,13 +25,13 @@
 		$res = $r->save();
 		var_dump($res);
 	});
-	$app->get("/resource/new", function() use ($app) {
+	$app->get("/resources/new", function() use ($app) {
 
 		$ResourceController = new \Blockr\Controllers\ResourceController($app);
 		$ResourceController->define();
 
 	});
-	$app->post("/resource/save", function() use ($app) {
+	$app->post("/resources/save", function() use ($app) {
 		$r = new \Blockr\Models\Resource($app->request->params('resource'));
 		echo $r->checkIdentifier();
 		echo "<br />";
@@ -39,21 +39,36 @@
 		 echo "<pre>"; print_r($r->save()); echo "</pre>";
 	});
 
-	$app->get("/project/new", function() use ($app) {
+	$app->get("/projects/new", function() use ($app) {
 		$ProjectController = new \Blockr\Controllers\ProjectController($app);
 		$ProjectController->define();
 	});
 
-	$app->get("/project/:slug", function($slug) use ($app) {
+	$app->get("/projects/:slug", function($slug) use ($app) {
 		$p = new \Blockr\Models\Project(array("slug"=>$slug));
 		$p->load();
 		$ProjectController = new \Blockr\Controllers\ProjectController($app);
 		$ProjectController->define($p);
 	});
 
-	$app->post("/project/save", function() use ($app) {
-		$p = new \Blockr\Models\Project($app->request->params('project'));
-		echo "<pre>"; print_r($p->save()); echo "</pre>";
+	$app->post("/projects/save", function() use ($app) {
+		$ProjectController = new \Blockr\Controllers\ProjectController($app);
+		$ProjectController->save($app->request->params('project'));
+	});
+
+	$app->get("/clients/new", function() use($app) {
+		$ClientController = new \Blockr\Controllers\ClientController($app);
+		$ClientController->define();
+	});
+
+	$app->post("/clients/save", function() use ($app) {
+		$ClientController = new \Blockr\Controllers\ClientController($app);
+		$ClientController->save($app->request->params('client'));
+	});
+
+	$app->get("/clients/:slug", function($slug) use ($app) {
+		$ClientController = new \Blockr\Controllers\ClientController($app);
+		$ClientController->define(new \Blockr\Models\Client(array("slug"=>$slug)));
 	});
 
 	$app->run();
