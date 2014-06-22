@@ -4,6 +4,11 @@
 	require "vendor/autoload.php";
 	$app = new \Slim\Slim();
 
+	$app->map("/", function() use ($app) {
+		$Controller = new \Blockr\Controllers\BlockrController($app);
+		$Controller->index();
+	})->via('GET', 'POST');
+
 	$app->get("/info", function() {
 		phpinfo();
 	});

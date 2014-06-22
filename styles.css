@@ -1,0 +1,85 @@
+html,body {
+	margin:0;
+	padding:0;
+	background:#c9c9c9;
+}
+form, ul, p, h1, h2, h3, h4, h5, h6 {
+	margin:0;
+}
+#header {
+	width:100%;
+	height:60px;
+	border-bottom:3px solid #1B325F;
+	background:white;
+	line-height:60px;
+	-webkit-box-shadow: 0 2px 2px 0 #383838;
+	box-shadow: 0 2px 2px 0 #383838;
+	padding-left:24px;
+}
+.manager {
+	float:left;
+}
+div.selection {
+	display:none;
+	position:absolute;
+	background:white;
+	line-height:60px;
+	-webkit-box-shadow: 0 5px 5px 0 #383838;
+	box-shadow: 0 5px 5px 0 #383838;
+	padding:4px;
+}
+a.project:hover+div.selection,
+a.client:hover+div.selection,
+a.resource:hover+div.selection,
+a.project:active+div.selection,
+a.client:active+div.selection,
+a.resource:active+div.selection {
+	display:block;
+}
+.manager a:link, .manager a:visited, .manager a:hover, .manager a:active {
+	display:block;
+	margin:16px 8px;
+	text-decoration:none;
+	-webkit-border-radius: 0px 10px 10px 0px;
+	border-radius: 0px 10px 10px 0px;
+	color:#333333;
+	text-align:center;
+	height:28px;
+	padding:0px 8px;
+	line-height:28px;
+	min-width:200px;
+	font-size:0.8em;
+	text-transform:uppercase;
+}
+.button.resource {
+	background:#F26C4F;
+}
+.button.client {
+	background:#3a89c9;
+}
+.button.project {
+	background:#9cc4e4;
+}
+#blockr {
+	background:white;
+	width:94%;
+	margin:24px auto 12px auto;
+	min-height:800px;
+	-webkit-box-shadow: 0 0 5px 2px #787878;
+	box-shadow: 0 0 5px 2px #787878;
+}
+.manager ul {
+	margin:0;
+}
+li.placeholder {
+	list-style:none;
+	color:#cccccc;
+}
+input {
+	padding:3px 6px;
+}
+input[type=text], input[type=email] {
+	border:1px solid #cfcfcf;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
