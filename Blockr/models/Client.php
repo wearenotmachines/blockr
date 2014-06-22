@@ -36,6 +36,7 @@ class Client extends BlockrModel {
 		if (!empty($this->projects)) {
 			$this->updateProjects();
 		}
+		return $this;
 	}
 
 	public function load($getProjects=false) {

@@ -51,7 +51,7 @@
 				<input type="text" name="resource[name]" placeholder="name this" />
 				<input type="email" name="resource[email]" placeholder="email address" />
 				<label for="resourceActive">live</label>
-				<input type="checkbox" name="resource[active]" id="resourceActive" value="1" checked />
+				<input type="checkbox" name="resource[settings][active]" id="resourceActive" value="1" checked />
 				<button data-save-href="/resources/save">Hit it</button>
 			</div>
 			<ul class="suggestionList" id="resourcesMatching" data-type="resources">
@@ -61,6 +61,26 @@
 	</div>
 </div>
 <div id="blockr">
+<? for ($i=0; $i<5; $i++) { ?>
+	<div class="column ofFive">
+		<h1>COLUMN</h1>
+		<? 
+		$blockStart = null;
+		foreach ($blocks AS $block) { 
+				if ($block['session']=="am") { ?>
+				<div data-timestamp="<?= $block['timestamp']; ?>" class="day">
+			<? } ?>
+					<div class="session <?= $block['session']; ?>" data-session="<?= $block['session']; ?>" data-timestamp="<?= $block['timestamp']; ?>">
+						<? if ($block['session']=="am") { ?><h5><?= $block['day']." - ".$block['date']; ?></h5><? } ?>
+						<h6><?= $block['session']; ?></h6>
+					</div>
+			<? if ($block['session']=="pm") { ?>
+				</div>
+			<? } ?>				
+		<? } ?>
+	</div>
+<? } ?>
+<p class="clear"></p>
 </div>
 <div id="footer">
 </div>	

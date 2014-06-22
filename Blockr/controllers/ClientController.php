@@ -19,7 +19,12 @@ class ClientController extends BaseController {
 
 	public function save($clientData) {
 		$client = new \Blockr\Models\Client($clientData);
-		echo "<pre>"; print_r($client->save()); echo "</pre>";
+		try {
+			echo $client->save()->toJSON();
+		} catch(Exception $e) {
+			$this->_app->response->setStatus(500);
+			$this->_app->response->write("Error saving client");
+		}
 	}
 
 	public function lookup($startsWith=null) {

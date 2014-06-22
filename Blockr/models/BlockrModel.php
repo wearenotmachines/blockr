@@ -110,4 +110,32 @@ class BlockrModel {
 		$this->_settings = $settingsArray;
 	}
 
+	public static function makeBlocks($starting, $duration="+30 days", $loadDataFor=null) {
+		$bounds = array();
+		$bounds["starts"] = is_int($starting) ? strtotime("midnight", $starting) : strtotime($starting);
+		$bounds["ends"] = is_int($duration) ? $duration : strtotime($duration, $bounds['starts']);
+		$t = 60*60*24; //twenty four hours of seconds
+		$p = 60*60*12; //twelve hours of seconds
+		$blocks = array();
+		for ($i=$bounds['starts']; $i<$bounds["ends"]; $i+=$t) {
+			$cAM = \Carbon\Carbon::createFromTimestamp($i);
+			$cPM = \Carbon\Carbon::createFromTimestamp($i+$p);
+			$blocks[$i] = array(
+					"isWeekend"=>(int)$cAM->isWeekend(),
+					"timestamp"=>$i,
+					"date"=>$cAM->format("d/m/Y"),
+					"day"=>$cAM->format("l"),
+					"session"=>$cAM->format("a")
+					);
+			$blocks[$i+$p] = array(
+						"isWeekend"=>(int)$cPM->isWeekend(),						
+						"timestamp"=>$i+$p,
+						"date"=>$cPM->format("d/m/Y"),
+						"day"=>$cPM->format("l"),
+						"session"=>$cPM->format("a")						
+					);
+		}	
+		return $blocks;
+	}
+
 }

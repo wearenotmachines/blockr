@@ -37,6 +37,11 @@ var blockr = {
 							if (objectContext=="projects") { 
 								blockr.makeActive(objectContext, element._id['$id'], element.name);
 								blockr.makeActive("clients", element.client._id['$id'], element.client.name);
+							} else if (objectContext=="clients") {
+								blockr.makeActive("clients", element._id['$id'], element.name);
+								blockr.deactivate("projects");
+							} else {
+								blockr.makeActive("resources", element._id['$id'], element.name);
 							}
 							suggestionList.closest("div.manager").find("div.selection").slideUp("fast");
 						});
@@ -83,9 +88,14 @@ var blockr = {
 	},
 
 	makeActive : function(context, id, label) {
-		window[context] = id;
+		window.blockr[context] = id;
 		$('div.manager[data-type='+context+'] a.button').text(label).attr("data-context-id", id);
 
+	},
+
+	deactivate : function(context) {
+		delete window.blockr[context];
+		$('div[data-type='+context+'] a.button').text(context.substr(0, context.length-1));
 	},
 
 	saveProject : function(e) {
@@ -106,14 +116,61 @@ var blockr = {
 				blockr.makeActive("clients", output.client._id['$id'], output.client.name);
 				$('#projectManager a.new').trigger("click");
 				$('#projectManager a.button').trigger("click");
+			},
+			error : function() {
+				alert("Error saving project");
 			}
 		});
+	},
+
+	saveClient : function(e) {
+		e.preventDefault();
+		var trigger = $(e.target);
+		clientData = {
+			"client[name]" : $('input[name="client[name]"]').val(),
+			"client[settings][active]" : $('input[name="client[settings][active]"]').is(":checked")
+		};
+		$.ajax({
+			url : trigger.data("saveHref"),
+			type : "post",
+			dataType : "json",
+			data : $.param(clientData),
+			success : function(output) {
+				blockr.makeActive("clients", output._id['$id'], output.name);
+				blockr.deactivate("projects");
+				$('#clientManager a.new').trigger("click");
+				$('#clientManager a.button').trigger("click");
+			},	
+			error : function() {
+				alert("error saving client");
+			}
+		})	
+	},
+
+	saveResource : function(e) {
+		e.preventDefault();
+		var trigger = $(e.target);
+		resourceData = {
+			"resource[name]" : $('input[name="resource[name]"]').val(),
+			"resource[email]" : $('input[name="resources[email]"]').val(),
+			"resource[settings][active]" : $('input[name="resource[settings][active]"]').is(":checked")
+		};
+		$.ajax({
+			url : trigger.data("saveHref"),
+			type : "post",
+			dataType : "json",
+			data : $.param(resourceData),
+			success : function(output) {
+				blockr.makeActive("resources", output._id['$id'], output.name);
+				$('#resourceManager a.new').trigger("click");
+				$('#resourceManager a.button').trigger("click");
+			},	
+			error : function() {
+				alert("error saving resource");
+			}
+		})	
 	}
 	
-
-
-
-
 }
 
 //kick it off
@@ -122,4 +179,6 @@ $(document).ready(function() {
 	$('input.search').on("keyup", blockr.objectSearch);
 	$('a.new').on("click", blockr.toggleObjectBuilder);
 	$('#newProject button').on("click", blockr.saveProject);
+	$('#newClient button').on("click", blockr.saveClient);
+	$('#newResource button').on("click", blockr.saveResource);
 });

@@ -2,6 +2,7 @@ html,body {
 	margin:0;
 	padding:0;
 	background:#c9c9c9;
+	position:relative;
 }
 form, ul, p, h1, h2, h3, h4, h5, h6 {
 	margin:0;
@@ -22,6 +23,7 @@ form, ul, p, h1, h2, h3, h4, h5, h6 {
 div.selection {
 	display:none;
 	position:absolute;
+	z-index:10000;
 	background:white;
 	line-height:60px;
 	-webkit-box-shadow: 0 5px 5px 0 #383838;
@@ -67,14 +69,7 @@ a.resource:active+div.selection {
 .button.project {
 	background:#9cc4e4;
 }
-#blockr {
-	background:white;
-	width:94%;
-	margin:24px auto 12px auto;
-	min-height:800px;
-	-webkit-box-shadow: 0 0 5px 2px #787878;
-	box-shadow: 0 0 5px 2px #787878;
-}
+
 .manager ul, .manager li {
 	margin:0;
 	padding:0;
@@ -110,4 +105,97 @@ input.search {
 	min-width:20px;
 	float:left;
 	border:0px none;
+}
+
+/**
+* Blockout styles
+**/
+#blockr {
+	background:white;
+	width:94%;
+	margin:24px auto 12px auto;
+	-webkit-box-shadow: 0 0 5px 2px #787878;
+	box-shadow: 0 0 5px 2px #787878;
+	position:relative;
+}
+.column {
+	display:table-cell;
+	border-right:1px dashed #cccccc;
+	float:left;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	padding:4px;
+}
+.end {
+	border-right:0px none;
+}
+.ofOne {
+	width:100%;
+}
+.ofTwo {
+	width:50%;
+}
+.ofThree {
+	width:33%;
+}
+.ofFour {
+	width:25%;
+}
+.ofFive {
+	width:20%;
+}
+.ofSix {
+	width:16%;
+}
+.ofSeven {
+	width:14%;
+}
+.ofEight {
+	width:12.5%;
+}
+.ofNine {
+	width : 11%;
+}
+.often {
+	width:10%;
+}
+.day {
+	border:1px solid #cccccc;
+	border-width:1px 1px 0px 1px;
+}
+.column h6 {
+	float:right;
+	line-height:40px;
+	text-align:center;
+	font-size:1.2em;
+}
+.column h5 {
+	font-weight:normal;
+	float:left;
+	background:white;
+	margin:-5px 0px 0px -9px;
+	padding:3px;
+	border:1px solid #cccccc;
+	border-width:1px 0px 0px 1px;
+}
+div.day:last-child {
+	border-bottom:1px solid #cccccc;
+	margin-bottom:8px;
+}
+.session {
+	height:40px;
+	display:block;
+	cursor:pointer;
+	padding:4px 8px;
+}
+.am {
+	border-bottom:1px solid #cccccc;
+}
+.clear {
+	clear:both;
+	height:0px;
+	line-height:0px;
+	padding:0;
+	margin:0;
 }

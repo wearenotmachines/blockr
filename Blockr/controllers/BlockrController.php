@@ -8,6 +8,7 @@ class BlockrController extends \Blockr\Controllers\BaseController {
 	}
 
 	public function index() {
+		$this->_data['blocks'] = \Blockr\Models\BlockrModel::makeBlocks(time(), "+30 days", null);
 		$this->_app->render("index.php", $this->_data);
 	}
 	

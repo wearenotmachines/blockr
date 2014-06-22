@@ -37,12 +37,14 @@
 
 	});
 	$app->post("/resources/save", function() use ($app) {
-		$r = new \Blockr\Models\Resource($app->request->params('resource'));
-		echo $r->checkIdentifier();
-		echo "<br />";
-		 echo $r->toJSON();
-		 echo "<pre>"; print_r($r->save()); echo "</pre>";
+		$ResourceController = new \Blockr\Controllers\ResourceController($app);
+		$ResourceController->save($app->request->params('resource'));
 	});
+
+	$app->map("/resources/lookup", function() use ($app) {
+		$ResourceController = new \Blockr\Controllers\ResourceController($app);
+		echo $ResourceController->lookup($app->request->params('search'));
+	})->via('GET', 'POST');
 
 	$app->get("/projects/new", function() use ($app) {
 		$ProjectController = new \Blockr\Controllers\ProjectController($app);
