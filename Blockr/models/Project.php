@@ -22,11 +22,11 @@ class Project extends \Blockr\Models\BlockrModel {
 
 	public function client($client=null) {
 		if (!empty($client)) {
-			if (!is_a($client, "Client")) {
+			if (!is_a($client, "\Blockr\Models\Client")) {
 				$client = new Client(array("slug"=>$client));
+				$this->_client->load();
 			}
 			$this->_client = $client;
-			$this->_client->load();
 		}
 		return $this->_client;
 	}
@@ -50,12 +50,14 @@ class Project extends \Blockr\Models\BlockrModel {
 
 	public function save() {
 		$this->slug($this->_name);
+		if (isset($this->_settings['active'])) $this->_settings['active'] = (boolean) $this->_settings['active'];
 		//add the project to the client's projects
-		$this->client()->insertProject(array($this->_id->__toString()=>$this->_name));
+		$this->client()->insertProject(array("_id"=>$this->_id->__toString(), "name"=>$this->_name));
 		if (!empty($this->_client)) {//summarise the client data
-			$this->_client = array("name"=>$this->_client->name(), "slug"=>$this->_client->slug());
+			$this->_client = array("_id"=>$this->_client->id(), "name"=>$this->_client->name(), "slug"=>$this->_client->slug());
 		}
-		return parent::save();
+		parent::save();
+		return $this;
 	}
 
 }

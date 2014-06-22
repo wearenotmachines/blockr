@@ -18,8 +18,25 @@ class ProjectController extends \Blockr\Controllers\BaseController {
 	}	
 
 	public function save($projectData=array()) {
+		//lookup the client / create a new client
+		$clientMatches = \Blockr\Models\Client::find("clients", array("name"=>$projectData['client']));
+		if ($clientMatches->count()) {
+			$clientMatches->next();
+			$client = new \Blockr\Models\Client($clientMatches->current());
+		} else {
+			$client = new \Blockr\Models\Client(array("name"=>$projectData['client']));
+			$client->setting("active", true);
+			$client->save();
+		}
+		unset($projectData['client']);
 		$p = new \Blockr\Models\Project($projectData);
-		echo "<pre>"; print_r($p->save()); echo "</pre>";
+		$p->client($client);
+		try {
+			echo $p->save()->toJSON();
+		} catch (Exception $e) {
+			$this->_app->response->setStatus(500);
+			$this->_app->response->write("Project Create Failed");
+		}
 	}
 
 	public function lookup($startsWith=null) {
@@ -31,7 +48,7 @@ class ProjectController extends \Blockr\Controllers\BaseController {
 		}
 		$matches = array();
 		foreach ($projects AS $p) {
-			$matches[$p['_id']->{'$id'}] = $p['name'];
+			$matches[] = $p;
 		}
 		return json_encode($matches);
 	}

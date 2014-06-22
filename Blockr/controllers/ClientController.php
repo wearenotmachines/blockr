@@ -31,7 +31,7 @@ class ClientController extends BaseController {
 		}
 		$matches = array();
 		foreach ($clients AS $c) {
-			$matches[$c['_id']->{'$id'}] = $c['name'];
+			$matches[] = $c;
 		}
 		return json_encode($matches);
 	}

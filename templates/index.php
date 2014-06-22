@@ -17,9 +17,8 @@
 			<a href="/projects/new" class="new">+</a>
 			<div id="newProject" class="objectDefinition">
 				<input type="text" name="project[name]" placeholder="start a new project" />
-				<input type="text" data-lookup-href="/clients/lookup" data-suggestable-role="label" class="suggestable" placeholder="find a client" />
 				<label for="projectActive">live</label><input type="checkbox" name="project[active]" checked />
-				<input type="hidden" name="project[client]" data-suggestable-role="value" class="suggestable" />
+				<input type="text" name="project[client]" data-lookup-href="/clients/lookup" data-suggestable-role="label" class="suggestable" placeholder="find a client" />
 				<button data-save-href="/projects/save">Do it</button>
 			</div>
 			<ul class="suggestionList" id="projectsMatching" data-type="projects">

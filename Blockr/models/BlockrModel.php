@@ -62,7 +62,7 @@ class BlockrModel {
 		if (!empty($res)) {
 			$this->_init($res);
 		} else {
-			throw new \Exception("Could not find anything for ".http_build_query($query));
+			return null;
 		}
 	}
 
