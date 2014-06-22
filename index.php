@@ -48,6 +48,11 @@
 		$ProjectController = new \Blockr\Controllers\ProjectController($app);
 		$ProjectController->define();
 	});
+	
+	$app->map("/projects/lookup", function() use ($app) {
+		$ProjectController = new \Blockr\Controllers\ProjectController($app);
+		echo $ProjectController->lookup($app->request->params('search'));
+	})->via('GET', 'POST');
 
 	$app->get("/projects/:slug", function($slug) use ($app) {
 		$p = new \Blockr\Models\Project(array("slug"=>$slug));
@@ -55,6 +60,7 @@
 		$ProjectController = new \Blockr\Controllers\ProjectController($app);
 		$ProjectController->define($p);
 	});
+
 
 	$app->post("/projects/save", function() use ($app) {
 		$ProjectController = new \Blockr\Controllers\ProjectController($app);
@@ -70,6 +76,11 @@
 		$ClientController = new \Blockr\Controllers\ClientController($app);
 		$ClientController->save($app->request->params('client'));
 	});
+
+	$app->map("/clients/lookup", function() use ($app) {
+		$ClientController = new \Blockr\Controllers\ClientController($app);
+		echo $ClientController->lookup($app->request->params('search'));
+	})->via('GET', 'POST');
 
 	$app->get("/clients/:slug", function($slug) use ($app) {
 		$ClientController = new \Blockr\Controllers\ClientController($app);

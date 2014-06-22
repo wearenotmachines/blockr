@@ -10,9 +10,10 @@ class BlockrModel {
 	protected $_settings = array();
 	protected $_identifierField = "_id";
 
-	public static function find($type, $where=array(), $howMany=null) {
+	public static function find($type, $where=array(), $howMany=null, $sort=null) {
 		$mongo = \Blockr\MongoConn::getInstance();
 		$res = $mongo->collection($type)->find($where);
+		if ($sort) $res->sort($sort);
 		if ($howMany) $res->limit($howMany);
 		return $res;
 	}

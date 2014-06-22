@@ -21,4 +21,18 @@ class ProjectController extends \Blockr\Controllers\BaseController {
 		$p = new \Blockr\Models\Project($projectData);
 		echo "<pre>"; print_r($p->save()); echo "</pre>";
 	}
+
+	public function lookup($startsWith=null) {
+		if (empty($startsWith)) {
+			$projects = \Blockr\Models\Project::find("projects", array(), 10, array("_id"=>-1));
+		} else {
+			$regex = new \MongoRegex("/".$startsWith."/i");
+			$projects = \Blockr\Models\Project::find("projects", array('name'=>array('$regex'=>$regex)), 10);
+		}
+		$matches = array();
+		foreach ($projects AS $p) {
+			$matches[$p['_id']->{'$id'}] = $p['name'];
+		}
+		return json_encode($matches);
+	}
 }

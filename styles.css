@@ -27,7 +27,13 @@ div.selection {
 	-webkit-box-shadow: 0 5px 5px 0 #383838;
 	box-shadow: 0 5px 5px 0 #383838;
 	padding:4px;
+	width:400px;
 }
+
+div.objectDefinition {
+	display:none;
+}
+/**
 a.project:hover+div.selection,
 a.client:hover+div.selection,
 a.resource:hover+div.selection,
@@ -36,6 +42,7 @@ a.client:active+div.selection,
 a.resource:active+div.selection {
 	display:block;
 }
+*/
 .manager a:link, .manager a:visited, .manager a:hover, .manager a:active {
 	display:block;
 	margin:16px 8px;
@@ -68,12 +75,18 @@ a.resource:active+div.selection {
 	-webkit-box-shadow: 0 0 5px 2px #787878;
 	box-shadow: 0 0 5px 2px #787878;
 }
-.manager ul {
+.manager ul, .manager li {
 	margin:0;
+	padding:0;
+	list-style:none;
 }
 li.placeholder {
 	list-style:none;
 	color:#cccccc;
+}
+.manager .selection li a {
+	text-align:left;
+	text-transform:none;
 }
 input {
 	padding:3px 6px;
@@ -82,4 +95,19 @@ input[type=text], input[type=email] {
 	border:1px solid #cfcfcf;
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
+}
+input.search {
+	width:90%;
+	display:block;
+	float:left;
+}
+.manager a.new {
+	display:block;
+	width:20px;
+	background:none;
+	margin:0;
+	padding:0;
+	min-width:20px;
+	float:left;
+	border:0px none;
 }

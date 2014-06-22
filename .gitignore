@@ -1,4 +1,4 @@
 vendor/*
 vendor
 composer.lock
-
+jquery.min.js

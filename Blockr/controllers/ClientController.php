@@ -21,5 +21,19 @@ class ClientController extends BaseController {
 		$client = new \Blockr\Models\Client($clientData);
 		echo "<pre>"; print_r($client->save()); echo "</pre>";
 	}
+
+	public function lookup($startsWith=null) {
+		if (empty($startsWith)) {
+			$clients = \Blockr\Models\Client::find("clients", array(), 10, array("_id"=>-1));
+		} else {
+			$regex = new \MongoRegex("/".$startsWith."/i");
+			$clients = \Blockr\Models\Client::find("clients", array('name'=>array('$regex'=>$regex)), 10);
+		}
+		$matches = array();
+		foreach ($clients AS $c) {
+			$matches[$c['_id']->{'$id'}] = $c['name'];
+		}
+		return json_encode($matches);
+	}
 	
 }

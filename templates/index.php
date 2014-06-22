@@ -4,50 +4,58 @@
 	<meta charset="UTF-8">
 	<title>Blockr - Kick-ass project management</title>
 	<link rel="stylesheet" href="styles.css" type="text/css" />
+	<script src="jquery.min.js"></script>
+	<script src="blockr.js"></script>
 </head>
 <body>
 
 <div id="header">
-	<div class="manager" id="projectManager">
-		<a class="button project" href="/projects/choose">project</a>
+	<div class="manager" id="projectManager" data-type="projects">
+		<a class="button project" href="/projects/lookup">project</a>
 		<div class="selection" id="projectSelection">
-			<div id="newProject">
+			<input type="search" class="search" data-lookup-href="/projects/lookup" name="projectSearch" placeholder="find a project" />
+			<a href="/projects/new" class="new">+</a>
+			<div id="newProject" class="objectDefinition">
 				<input type="text" name="project[name]" placeholder="start a new project" />
-				<label for="projectActive">live</label><input type="checkbox" name="project[active]" checked />
 				<input type="text" data-lookup-href="/clients/lookup" data-suggestable-role="label" class="suggestable" placeholder="find a client" />
+				<label for="projectActive">live</label><input type="checkbox" name="project[active]" checked />
 				<input type="hidden" name="project[client]" data-suggestable-role="value" class="suggestable" />
 				<button data-save-href="/projects/save">Do it</button>
 			</div>
-			<ul id="projectsMatching">
+			<ul class="suggestionList" id="projectsMatching" data-type="projects">
 				<li class="placeholder">wait for it....</li>
 			</ul>
 		</div>
 	</div>
-	<div class="manager" id="clientManager">
-		<a class="button client" href="/clients/choose">client</a>
+	<div class="manager" id="clientManager" data-type="clients">
+		<a class="button client" href="/clients/lookup">client</a>
 		<div class="selection" id="clientSelection">
-			<div id="newClient">
+			<input type="search" class="search" data-lookup-href="/clients/lookup" name="clientSearch" placeholder="find a client" />
+			<a href="/clients/new" class="new">+</a>
+			<div id="newClient" class="objectDefinition">
 				<input type="text" name="client[name]" placeholder="add a new client" />
 				<label for="clientActive">live</label>
 				<input type="checkbox" name="client[active]" id="clientActive" checked />
 				<button data-save-href="/clients/save">Make it so</button>
 			</div>
-			<ul id="clientsMatching">
+			<ul class="suggestionList" id="clientsMatching" data-type="clients">
 				<li class="placeholder">hang about.....</li>
 			</ul>
 		</div>
 	</div>
-	<div class="manager" id="resourceManager">
-		<a class="button resource" href="/resources/choose">resource</a>
+	<div class="manager" id="resourceManager" data-type="resources">
+		<a class="button resource" href="/resources/lookup">resource</a>
 		<div class="selection" id="resourceSelecttion">
-			<div id="newResource">
+			<input type="search" class="search" data-lookup-href="/resources/lookup" name="resourceSearch" placeholder="find a resource" />
+			<a href="/resources/new" class="new">+</a>
+			<div id="newResource" class="objectDefinition">
 				<input type="text" name="resource[name]" placeholder="name this" />
 				<input type="email" name="resource[email]" placeholder="email address" />
 				<label for="resourceActive">live</label>
 				<input type="checkbox" name="resource[active]" id="resourceActive" value="1" checked />
 				<button data-save-href="/resources/save">Hit it</button>
 			</div>
-			<ul id="resourcesMatching">
+			<ul class="suggestionList" id="resourcesMatching" data-type="resources">
 				<li class="placeholder">working on it....</li>
 			</ul>
 		</div>
