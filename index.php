@@ -89,4 +89,13 @@
 		$ClientController->define(new \Blockr\Models\Client(array("slug"=>$slug)));
 	});
 
+	$app->post("/blocks/save", function() use ($app) {
+		if ($app->request->params("old")) {
+			$old = new \Blockr\Models\BlockModel($app->request->params("old"));
+			$old->remove();
+		}
+		$new = new \Blockr\Models\BlockModel($app->request->params("new"));
+		echo json_encode($new->save());
+	});
+
 	$app->run();

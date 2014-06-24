@@ -70,9 +70,10 @@
 				if ($block['session']=="am") { ?>
 				<div data-timestamp="<?= $block['timestamp']; ?>" class="day">
 			<? } ?>
-					<div class="session <?= $block['session']; ?>" data-session="<?= $block['session']; ?>" data-timestamp="<?= $block['timestamp']; ?>">
+					<div class="session <?= $block['session']; ?>" data-state="unassigned" data-session="<?= $block['session']; ?>" data-timestamp="<?= $block['timestamp']; ?>">
 						<? if ($block['session']=="am") { ?><h5><?= $block['day']." - ".$block['date']; ?></h5><? } ?>
 						<h6><?= $block['session']; ?></h6>
+						<span class="label"></span>
 					</div>
 			<? if ($block['session']=="pm") { ?>
 				</div>

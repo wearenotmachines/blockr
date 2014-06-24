@@ -199,3 +199,12 @@ div.day:last-child {
 	padding:0;
 	margin:0;
 }
+.session.committed {
+	background:#bbbbbb;
+}
+.session.tentative {
+	background:#dfdfdf;
+}
+.session.unassigned {
+	background:white;
+}

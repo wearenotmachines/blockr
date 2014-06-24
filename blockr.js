@@ -89,6 +89,7 @@ var blockr = {
 
 	makeActive : function(context, id, label) {
 		window.blockr[context] = id;
+		window.blockr[context+"Label"] = label;
 		$('div.manager[data-type='+context+'] a.button').text(label).attr("data-context-id", id);
 
 	},
@@ -169,6 +170,64 @@ var blockr = {
 				alert("error saving resource");
 			}
 		})	
+	},
+
+	setBlock : function(e) {
+		var block = $(e.target);
+		var oldBlock = block.data();
+
+		var project = window.blockr.projects;
+		var client = window.blockr.clients;
+		var resource = block.data("resource")==undefined ? window.blockr.resources : block.data("resource");
+		var label = block.find("span.label");
+
+		if (project==undefined) {
+			blockr.toast("Choose a project to allocate");
+			return false;
+		}
+		if (resource==undefined) {
+			blockr.toast("Select the resource to allocate");
+			return false;
+		}
+		block.attr("data-resource", resource);
+		block.attr("data-project", project);
+		block.attr("data-client", client);
+		block.removeClass(block.attr("data-state"));
+		block.attr("data-state", blockr.getNextState(block.attr("data-state")));
+		block.addClass(block.attr("data-state"));
+		label.text((block.attr("data-state")=="unassigned" || block.attr("data-state")=="" || block.attr("data-state")==undefined ) ? "" : window.blockr["projectsLabel"]);
+		var newBlock = block.data();
+		console.log(oldBlock, newBlock);
+	},
+
+	clearBlock : function(e) {
+		var block = $(e.target);
+		block.removeClass("tentative");
+		block.removeClass("committed");
+		block.removeAttr("data-resource");
+		block.removeAttr("data-project");
+		block.removeAttr("data-client");
+		block.removeAttr("data-state");
+		block.find("span.label").text("");
+	},
+
+	getNextState : function(currentState) {
+		switch (currentState) {
+			case "committed":
+				return "tentative";
+			break;
+			case "tentative":
+				return "";
+			break;
+			case "":
+			case undefined:
+			case "unassigned":
+				return "committed";
+		}
+	},
+
+	toast : function(error) {
+		alert(error);
 	}
 	
 }
@@ -181,4 +240,5 @@ $(document).ready(function() {
 	$('#newProject button').on("click", blockr.saveProject);
 	$('#newClient button').on("click", blockr.saveClient);
 	$('#newResource button').on("click", blockr.saveResource);
+	$('.session').on("click", blockr.setBlock).on("dblclick", blockr.clearBlock);
 });
