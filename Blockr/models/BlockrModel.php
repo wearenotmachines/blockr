@@ -32,7 +32,10 @@ class BlockrModel {
 				if (in_array($k, static::$_props)) {
 					$k = trim($k, "_");
 					//wrap _ids as mongo ids
-					if ($k=="id" && !is_a($v, "MongoId")) $v = new \MongoId($v);
+					if ($k=="id" && !is_a($v, "MongoId")) {
+
+						$v = new \MongoId($v);	
+					}
 					$this->{"_".$k} = $v;
 				}			
 			}

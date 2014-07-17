@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 	ini_set("display_errors", "on");
 	error_reporting(E_ALL);
 	require "vendor/autoload.php";
@@ -95,7 +96,14 @@
 			$old->remove();
 		}
 		$new = new \Blockr\Models\BlockModel($app->request->params("new"));
-		echo json_encode($new->save());
+		$new->save();
+		//echo json_encode($new);
+		echo $new->toJSON();
+	});
+
+	$app->get("/blocks/test", function() use ($app) {
+		$b = new \Blockr\Models\BlockModel();
+		echo "<pre>"; print_r($b->getProps()); echo "</pre>";
 	});
 
 	$app->run();

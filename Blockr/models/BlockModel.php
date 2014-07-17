@@ -1,59 +1,59 @@
 <?php namespace Blockr\Models;
-
-class Blockr\Models\BlockModel extends \Blockr\Models\BlockrModel {
+use \Blockr\Models;
+class BlockModel extends BlockrModel {
 	
 	protected static $_props = array("_id", "project", "client", "resource", "session", "timestamp", "state");
+	protected $_collection = "blocks";
+
+	public function __construct($config = array()) {
+		parent::__construct($config);
+	}
 
 	public function project($project=null) {
 		if (!empty($project)) {
-			$tthis->_project = $project;
+			$this->_project = $project;
 		}
-		return $this->_project;
+		return empty($this->_project) ? null : $this->_project;
 	}
 
 	public function client($client=null) {
 		if (!empty($client)) {
-			$tthis->_client = $client;
+			$this->_client = $client;
 		}
-		return $this->_client;
+		return empty($this->_client) ? null : $this->_client;
 	}
 
 	public function resource($resource=null) {
 		if (!empty($resource)) {
-			$tthis->_resource = $resource;
+			$this->_resource = $resource;
 		}
-		return $this->_resource;
+		return empty($this->_resource) ? null : $this->_resource;
 	}
 
 	public function session($session=null) {
 		if (!empty($session)) {
-			$tthis->_session = $session;
+			$this->_session = $session;
 		}
-		return $this->_session;
+		return empty($this->_session) ? null : $this->_session;
 	}
 
 	public function timestamp($timestamp=null) {
 		if (!empty($timestamp)) {
-			$tthis->_timestamp = $timestamp;
+			$this->_timestamp = $timestamp;
 		}
-		return $this->_timestamp;
+		return empty($this->_timestamp) ? null : $this->_timestamp;
 	}
 
 	public function state($state=null) {
 		if (!empty($state)) {
-			$tthis->_state = $state;
+			$this->_state = $state;
 		}
-		return $this->_state;
+		return empty($this->_state) ? null : $this->_state;
 	}
 
 	public function remove() {
-		$this->_mongo->collection("Blocks")->remove(array(
-													"timestamp"=>$this->_timestamp,
-													"session"=>$this->_session,
-													"resource"=>$this->_resource,
-													"project"=>$this->_project,
-													"client"=>$this->_client
-												));					
+		if ($this->_state=="unassigned") return true;
+		$this->_mongo->collection("blocks")->remove(array("_id"=>$this->_id));					
 	}
 
 }

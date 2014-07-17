@@ -174,11 +174,21 @@ var blockr = {
 
 	setBlock : function(e) {
 		var block = $(e.target);
-		var oldBlock = block.data();
+		var oldBlock = {};
+		if (block.attr("data-id")) oldBlock._id = block.attr("data-id");
+		if (block.attr("data-state")) oldBlock.state = block.attr("data-state");
+		if (block.attr("data-resource")) oldBlock.resource = block.attr("data-resource");
+		if (block.attr("data-client")) oldBlock.client = block.attr("data-client");
+		if (block.attr("data-project")) oldBlock.project = block.attr("data-project");
+		if (block.attr("data-timestamp")) oldBlock.timestamp = block.attr("data-timestamp");
+		if (block.attr("data-session")) oldBlock.session = block.attr("data-session");
 
 		var project = window.blockr.projects;
+		var projectLabel = window.blockr.projectsLabel;
 		var client = window.blockr.clients;
+		var clientLabel = window.blockr.clientsLabel;
 		var resource = block.data("resource")==undefined ? window.blockr.resources : block.data("resource");
+		var resourceLabel = block.data("resourceLabel")==undefined ? window.blockr.resourcesLabel : block.data("resourceLabel");
 		var label = block.find("span.label");
 
 		if (project==undefined) {
@@ -190,14 +200,45 @@ var blockr = {
 			return false;
 		}
 		block.attr("data-resource", resource);
+		block.attr("data-resource-label", window.block)
 		block.attr("data-project", project);
+		block.attr("data-project-label", projectLabel);
 		block.attr("data-client", client);
+		block.attr("data-client-label", clientLabel);
 		block.removeClass(block.attr("data-state"));
-		block.attr("data-state", blockr.getNextState(block.attr("data-state")));
+		block.attr("data-state", "committed");
 		block.addClass(block.attr("data-state"));
-		label.text((block.attr("data-state")=="unassigned" || block.attr("data-state")=="" || block.attr("data-state")==undefined ) ? "" : window.blockr["projectsLabel"]);
+		label.text(window.blockr["projectsLabel"]);
 		var newBlock = block.data();
-		console.log(oldBlock, newBlock);
+		newBlock.resource = {
+			"id" : resource,
+			"label" : resourceLabel
+		};		
+		newBlock.project = {
+			"id" : project,
+			"label" : projectLabel
+		};
+		newBlock.client = {
+			"id" : client,
+			"label" : clientLabel
+		};
+		$.ajax({
+			url : "/blocks/save",
+			dataType : "json",
+			type : "post",
+			data : {
+				"old" : oldBlock,
+				"new" : newBlock
+			},
+			success : function(output) {
+				savedBlock = output;
+				console.log("before");
+				console.log(oldBlock);
+				console.log("After");
+				console.log(savedBlock);
+				block.attr("data-id", savedBlock._id.$id);
+			}
+		});
 	},
 
 	clearBlock : function(e) {
